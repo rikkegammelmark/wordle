@@ -1,0 +1,13 @@
+<div class="content">
+  <app-word *ngFor="let word of words" [goal]="goal" [word]="word"></app-word>
+  <div class="button-panel">
+    <button mat-button (click)="reset()">Reset</button>
+  </div>
+  <app-keyboard
+    #keyboard
+    [onChange]="onInput"
+    [onEnter]="onEnter"
+  ></app-keyboard>
+  <p>{{ finishedMessage }}</p>
+  <button class="dummy-button" #dummyButton></button>
+</div>

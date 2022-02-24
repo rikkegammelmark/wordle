@@ -1,0 +1,5 @@
+<div class="content">
+  <div class="tile" *ngFor="let i of [0, 1, 2, 3, 4]" [ngClass]="getStyles(i)">
+    {{ word.value[i] | uppercase }}
+  </div>
+</div>
