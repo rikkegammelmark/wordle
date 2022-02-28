@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { WORDS } from 'src/assets/en5';
+import { ANSWERS } from 'src/assets/answers';
+import { GUESSES } from 'src/assets/guesses';
 
 @Injectable({
   providedIn: 'root'
@@ -9,10 +10,10 @@ export class WordService {
   constructor() { }
 
   getRandomWord(): string {
-    return WORDS[Math.floor(Math.random() * WORDS.length)];
+    return ANSWERS[Math.floor(Math.random() * ANSWERS.length)];
   }
 
   isValid(word: string): boolean {
-    return WORDS.includes(word);
+    return ANSWERS.includes(word) || GUESSES.includes(word);
   }
 }
