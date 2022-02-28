@@ -27,11 +27,11 @@ export class BoardComponent implements OnInit {
   }
 
   onInput = (input: string): void => {
-    console.log("VUF", input, this.current)
     if (this.finished) {
       return;
     }
     this.words[this.current].value = input.toLowerCase();
+    this.words[this.current].invalid = input.length === 5 && !this.wordService.isValid(input);
   }
 
   onEnter = (): void => {
@@ -42,13 +42,11 @@ export class BoardComponent implements OnInit {
   }
 
   finishWord() {
-    console.log("Finishing word", this.words);
     const word = this.words[this.current];
     if (!this.wordService.isValid(word.value)) {
       return;
     }
     const d = details(this.goal, word.value);
-    console.log("Deails", d);
     // Add details to word
     word.details = d;
 
@@ -90,6 +88,7 @@ export class BoardComponent implements OnInit {
     this.current = 0;
     this.finishedMessage = "";
     this.resetGoal();
+    this.correctLetters = [] as string[];
     this.dummyButton.nativeElement.focus();
   }
 
@@ -99,12 +98,12 @@ export class BoardComponent implements OnInit {
 
   emptyWords(): Word[] {
     return [
-      {value: "", details: ""},
-      {value: "", details: ""},
-      {value: "", details: ""},
-      {value: "", details: ""},
-      {value: "", details: ""},
-      {value: "", details: ""},
+      {value: "", details: "", invalid: false},
+      {value: "", details: "", invalid: false},
+      {value: "", details: "", invalid: false},
+      {value: "", details: "", invalid: false},
+      {value: "", details: "", invalid: false},
+      {value: "", details: "", invalid: false},
     ];
   }
 }

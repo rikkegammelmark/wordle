@@ -50,6 +50,7 @@ export class KeyboardComponent {
   }
 
   setLetterStyle(letter: string, style: string) {
+    console.log("setLetterStyle", letter, style, !!this.keyboard)
     const s = (style === "p" ? "cposition" : (style === "l" ? "cletter" : "wrong"))
     this.keyboard?.addButtonTheme(letter, s);
   }

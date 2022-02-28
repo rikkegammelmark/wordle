@@ -8,11 +8,11 @@ export class WordService {
 
   constructor() { }
 
-  getRandomWord() {
+  getRandomWord(): string {
     return WORDS[Math.floor(Math.random() * WORDS.length)];
   }
 
-  isValid(word: string) {
+  isValid(word: string): boolean {
     return WORDS.includes(word);
   }
 }

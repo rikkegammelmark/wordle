@@ -9,7 +9,7 @@ import { Word } from 'src/app/word';
 export class WordComponent implements OnInit {
 
   @Input() goal: string = "";
-  @Input() word: Word = {value: "", details: ""};
+  @Input() word: Word = {value: "", details: "", invalid: false};
 
   constructor() { }
 
@@ -18,6 +18,7 @@ export class WordComponent implements OnInit {
 
   getStyles(index: number) {
     return {
+      invalid: this.word.invalid,
       cposition: this.word.details[index] === 'p',
       cletter: this.word.details[index] === 'l',
       wrong: this.word.details[index] === 'w'
