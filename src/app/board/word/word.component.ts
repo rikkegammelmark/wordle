@@ -16,12 +16,17 @@ export class WordComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  getStyles(index: number) {
+  getTileStyles(index: number) {
     return {
-      invalid: this.word.invalid,
       cposition: this.word.details[index] === 'p',
       cletter: this.word.details[index] === 'l',
       wrong: this.word.details[index] === 'w'
+    }
+  }
+
+  getLetterStyles() {
+    return {
+      invalid: this.word.invalid,
     }
   }
 }
