@@ -5,8 +5,8 @@
   </div>
   <app-keyboard
     #keyboard
-    [onChange]="onInput"
-    [onEnter]="onEnter"
+    (change)="onInput($event)"
+    (enter)="onEnter()"
   ></app-keyboard>
   <p>{{ finishedMessage }}</p>
   <button class="dummy-button" #dummyButton>dummy</button>
