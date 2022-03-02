@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Hotkey, HotkeysService } from 'angular2-hotkeys';
 import { details } from '../misc/word-util';
-import { Word } from '../word';
-import { WordService } from '../word.service';
+import { Word } from '../model/word';
+import { WordService } from '../service/word.service';
 
 @Component({
   selector: 'app-board',

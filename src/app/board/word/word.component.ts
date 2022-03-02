@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Word } from 'src/app/word';
+import { Word } from 'src/app/model/word';
 
 @Component({
   selector: 'app-word',
