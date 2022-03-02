@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Hotkey, HotkeysService } from 'angular2-hotkeys';
 import { details } from '../misc/word-util';
 import { Word } from '../word';
 import { WordService } from '../word.service';
@@ -20,7 +21,12 @@ export class BoardComponent implements OnInit {
   current = 0;
   finishedMessage = "";
 
-  constructor(private wordService: WordService) { }
+  constructor(private wordService: WordService, private hotkeysService: HotkeysService) {
+    hotkeysService.add(new Hotkey('alt+shift+r', (event: KeyboardEvent) => {
+      this.reset();
+      return false;
+    }))
+  }
 
   ngOnInit(): void {
     this.resetGoal();
