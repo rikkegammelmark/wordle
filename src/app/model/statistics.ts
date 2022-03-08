@@ -13,3 +13,8 @@ export const INITIAL_STATISTICS: Statistics = {
   maxStreak: 0,
   guessDist: Array(6).fill(0),
 }
+
+export interface Game {
+  win: boolean;
+  guesses: number;
+}

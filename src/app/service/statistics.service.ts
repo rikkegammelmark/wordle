@@ -1,25 +1,17 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, mergeMap, Observable, of, tap } from 'rxjs';
 import { calculateStatistics } from '../misc/statistics-util';
-import { INITIAL_STATISTICS, Statistics } from '../model/statistics';
-import { Game } from './in-memory-data.service';
+import { Game, INITIAL_STATISTICS, Statistics } from '../model/statistics';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StatisticsService {
 
-  private statisticsUrl = 'api/games';
-
-  httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  };
-
-  constructor(private http: HttpClient) { }
+  constructor() { }
 
   getStatistics(): Observable<Statistics> {
-    return this.http.get<Game[]>(this.statisticsUrl).pipe(
+    return this.get().pipe(
       tap(games => console.log("getStatistics", games)),
       map(games => calculateStatistics(games)),
       catchError(err => {
@@ -30,7 +22,7 @@ export class StatisticsService {
   }
 
   updateAndGetStatistics(win: boolean, guesses: number): Observable<Statistics> {
-    return this.http.post<Game>(this.statisticsUrl, {win: win, guesses: guesses}, this.httpOptions).pipe(
+    return this.post({win: win, guesses: guesses}).pipe(
       tap(game => console.log("updateAndGetStatistics", game)),
       mergeMap(_ => this.getStatistics()),
       catchError(err => {
@@ -38,5 +30,22 @@ export class StatisticsService {
         return of(INITIAL_STATISTICS);
       })
     )
+  }
+
+  get(): Observable<Game[]> {
+    const games = this.getGames();
+    return of(games);
+  }
+
+  post(game: Game): Observable<Game> {
+    const games = this.getGames();
+    games.push(game);
+    localStorage.setItem('games', JSON.stringify(games));
+    return of(game);
+  }
+
+  getGames(): Game[] {
+    const games = localStorage.getItem('games');
+    return games ? JSON.parse(games) : [];
   }
 }
