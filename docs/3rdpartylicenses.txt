@@ -60,9 +60,6 @@ THE SOFTWARE.
 @angular/platform-browser
 MIT
 
-angular-in-memory-web-api
-MIT
-
 angular2-hotkeys
 MIT
 The MIT License (MIT)
