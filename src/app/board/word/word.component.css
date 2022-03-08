@@ -25,3 +25,7 @@
 .wrong {
   background-color: lightgray;
 }
+
+.invalid {
+  color: red;
+}

@@ -1,4 +1,4 @@
-import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Output, ViewEncapsulation } from '@angular/core';
 import Keyboard from 'simple-keyboard';
 
 @Component({
@@ -11,8 +11,8 @@ export class KeyboardComponent {
 
   value = "";
   keyboard?: Keyboard;
-  @Input() onChange: (input: string) => void = (input: string) => {};
-  @Input() onEnter: () => void = () => {};
+  @Output() change = new EventEmitter<string>();
+  @Output() enter = new EventEmitter<void>();
 
   ngAfterViewInit() {
     this.keyboard = new Keyboard({
@@ -39,17 +39,18 @@ export class KeyboardComponent {
   onKeyPress = (button: string) => {
     console.log("Key pressed", button)
     if (button === "{enter}") {
-      this.onEnter();
+      this.enter.emit();
     }
   };
 
   onChangeInput = (input: string) => {
     const substring = input.substring(0, 5);
     this.keyboard?.setInput(substring);
-    this.onChange(substring);
+    this.change.emit(substring);
   }
 
   setLetterStyle(letter: string, style: string) {
+    console.log("setLetterStyle", letter, style, !!this.keyboard)
     const s = (style === "p" ? "cposition" : (style === "l" ? "cletter" : "wrong"))
     this.keyboard?.addButtonTheme(letter, s);
   }

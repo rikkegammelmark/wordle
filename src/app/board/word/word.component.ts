@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Word } from 'src/app/word';
+import { Word } from 'src/app/model/word';
 
 @Component({
   selector: 'app-word',
@@ -9,18 +9,24 @@ import { Word } from 'src/app/word';
 export class WordComponent implements OnInit {
 
   @Input() goal: string = "";
-  @Input() word: Word = {value: "", details: ""};
+  @Input() word: Word = {value: "", details: "", invalid: false};
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  getStyles(index: number) {
+  getTileStyles(index: number) {
     return {
       cposition: this.word.details[index] === 'p',
       cletter: this.word.details[index] === 'l',
       wrong: this.word.details[index] === 'w'
+    }
+  }
+
+  getLetterStyles() {
+    return {
+      invalid: this.word.invalid,
     }
   }
 }
