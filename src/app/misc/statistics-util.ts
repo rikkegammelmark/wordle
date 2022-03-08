@@ -1,5 +1,4 @@
-import { Statistics } from "../model/statistics";
-import { Game } from "../service/in-memory-data.service";
+import { Game, Statistics } from "../model/statistics";
 
 export function calculateStatistics(games: Game[]): Statistics {
   const streaks = calculateStreaks(games.map(g => g.win));
