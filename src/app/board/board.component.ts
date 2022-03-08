@@ -1,8 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Hotkey, HotkeysService } from 'angular2-hotkeys';
 import { details } from '../misc/word-util';
-import { Word } from '../word';
-import { WordService } from '../word.service';
+import { Word } from '../model/word';
+import { StatisticsService } from '../service/statistics.service';
+import { WordService } from '../service/word.service';
+import { StatisticsDialogComponent } from './statistics-dialog/statistics-dialog.component';
 
 @Component({
   selector: 'app-board',
@@ -21,7 +24,7 @@ export class BoardComponent implements OnInit {
   current = 0;
   finishedMessage = "";
 
-  constructor(private wordService: WordService, private hotkeysService: HotkeysService) {
+  constructor(private wordService: WordService, private hotkeysService: HotkeysService, private statisticsService: StatisticsService, public dialog: MatDialog) {
     hotkeysService.add(new Hotkey('alt+shift+r', (event: KeyboardEvent) => {
       this.reset();
       return false;
@@ -63,16 +66,18 @@ export class BoardComponent implements OnInit {
 
     // Is game finished?
     if (this.current === 5 || d === "ppppp") {
-      this.finished = true;
-      if (d === "ppppp") {
-        this.finishedMessage = "Congratulations!";
-      } else {
-        this.finishedMessage = "Sorry the word was " + this.goal.toUpperCase();
-      }
+      this.finishGame(d === "ppppp", this.current + 1);
     }
 
     this.keyboard.clearInput();
     this.current++;
+  }
+
+  finishGame(win: boolean, guesses: number) {
+    console.log("Finish game", win, guesses)
+    this.finished = true;
+    this.finishedMessage = win ? "Congratulations!" : "Sorry the word was " + this.goal.toUpperCase();
+    this.openStatistics({ win: win, guesses: guesses });
   }
 
   updateKeyboard(letter: string, detail: string) {
@@ -86,7 +91,7 @@ export class BoardComponent implements OnInit {
   }
 
   reset(): void {
-    console.log("Resetting")
+    console.log("Resetting", this.dummyButton)
     this.words = this.emptyWords();
     this.keyboard.clearInput();
     this.keyboard.resetStyles();
@@ -95,7 +100,7 @@ export class BoardComponent implements OnInit {
     this.finishedMessage = "";
     this.resetGoal();
     this.correctLetters = [] as string[];
-    this.dummyButton.nativeElement.focus();
+    this.dummyButton.focus();
   }
 
   resetGoal(): void {
@@ -111,5 +116,21 @@ export class BoardComponent implements OnInit {
       {value: "", details: "", invalid: false},
       {value: "", details: "", invalid: false},
     ];
+  }
+
+  openStatistics(result?: { win: boolean, guesses: number }): void {
+    if (result) {
+      this.statisticsService.updateAndGetStatistics(result.win, result.guesses).subscribe(statistics => {
+        this.dialog.open(StatisticsDialogComponent, {
+          data: statistics
+        })
+      })
+    } else {
+      this.statisticsService.getStatistics().subscribe(statistics => {
+        this.dialog.open(StatisticsDialogComponent, {
+          data: statistics
+        });
+      })
+    }
   }
 }
