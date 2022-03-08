@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Hotkey, HotkeysService } from 'angular2-hotkeys';
 import { details } from '../misc/word-util';
@@ -15,7 +15,8 @@ import { StatisticsDialogComponent } from './statistics-dialog/statistics-dialog
 export class BoardComponent implements OnInit {
 
   @ViewChild('keyboard') keyboard?: any;
-  @ViewChild('dummyButton') dummyButton?: any;
+  @ViewChild('resetButton', { read: ElementRef }) resetButton?: any;
+  @ViewChild('statisticsButton', { read: ElementRef }) statisticsButton?: any;
 
   goal = "";
   words = this.emptyWords();
@@ -91,7 +92,7 @@ export class BoardComponent implements OnInit {
   }
 
   reset(): void {
-    console.log("Resetting", this.dummyButton)
+    console.log("Resetting")
     this.words = this.emptyWords();
     this.keyboard.clearInput();
     this.keyboard.resetStyles();
@@ -100,7 +101,8 @@ export class BoardComponent implements OnInit {
     this.finishedMessage = "";
     this.resetGoal();
     this.correctLetters = [] as string[];
-    this.dummyButton.focus();
+    this.resetButton.nativeElement.blur();
+    //this.dummyButton.nativeElement.focus();
   }
 
   resetGoal(): void {
@@ -119,6 +121,7 @@ export class BoardComponent implements OnInit {
   }
 
   openStatistics(result?: { win: boolean, guesses: number }): void {
+    this.statisticsButton.nativeElement.blur();
     if (result) {
       this.statisticsService.updateAndGetStatistics(result.win, result.guesses).subscribe(statistics => {
         this.dialog.open(StatisticsDialogComponent, {
